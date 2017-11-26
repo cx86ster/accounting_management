@@ -1,0 +1,33 @@
+<%= form_for(@accounting_group) do |f| %>
+  <% if @accounting_group.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@accounting_group.errors.count, "error") %> prohibited this accounting_group from being saved:</h2>
+
+      <ul>
+      <% @accounting_group.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :accounting_group_code %><br>
+    <%= f.text_field :accounting_group_code %>
+  </div>
+  <div class="field">
+    <%= f.label :accounting_group_name %><br>
+    <%= f.text_field :accounting_group_name %>
+  </div>
+  <div class="field">
+    <%= f.label :accounting_class %><br>
+    <%= f.number_field :accounting_class %>
+  </div>
+  <div class="field">
+    <%= f.label :deleted_at %><br>
+    <%= f.datetime_select :deleted_at %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

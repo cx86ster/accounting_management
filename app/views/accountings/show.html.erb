@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Accounting date:</strong>
+  <%= @accounting.accounting_date %>
+</p>
+
+<p>
+  <strong>Accounting money:</strong>
+  <%= @accounting.accounting_money %>
+</p>
+
+<p>
+  <strong>Item name:</strong>
+  <%= @accounting.item_name %>
+</p>
+
+<p>
+  <strong>Accounting group:</strong>
+  <%= @accounting.accounting_group_id %>
+</p>
+
+<p>
+  <strong>Purchase place:</strong>
+  <%= @accounting.purchase_place %>
+</p>
+
+<p>
+  <strong>Accounting source:</strong>
+  <%= @accounting.accounting_source %>
+</p>
+
+<p>
+  <strong>Accounting class:</strong>
+  <%= @accounting.accounting_class %>
+</p>
+
+<%= link_to 'Edit', edit_accounting_path(@accounting) %> |
+<%= link_to 'Back', accountings_path %>

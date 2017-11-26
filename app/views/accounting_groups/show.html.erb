@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Accounting group code:</strong>
+  <%= @accounting_group.accounting_group_code %>
+</p>
+
+<p>
+  <strong>Accounting group name:</strong>
+  <%= @accounting_group.accounting_group_name %>
+</p>
+
+<p>
+  <strong>Accounting class:</strong>
+  <%= @accounting_group.accounting_class %>
+</p>
+
+<p>
+  <strong>Deleted at:</strong>
+  <%= @accounting_group.deleted_at %>
+</p>
+
+<%= link_to 'Edit', edit_accounting_group_path(@accounting_group) %> |
+<%= link_to 'Back', accounting_groups_path %>

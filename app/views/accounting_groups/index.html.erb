@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Accounting Groups</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Accounting group code</th>
+      <th>Accounting group name</th>
+      <th>Accounting class</th>
+      <th>Deleted at</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @accounting_groups.each do |accounting_group| %>
+      <tr>
+        <td><%= accounting_group.accounting_group_code %></td>
+        <td><%= accounting_group.accounting_group_name %></td>
+        <td><%= accounting_group.accounting_class %></td>
+        <td><%= accounting_group.deleted_at %></td>
+        <td><%= link_to 'Show', accounting_group %></td>
+        <td><%= link_to 'Edit', edit_accounting_group_path(accounting_group) %></td>
+        <td><%= link_to 'Destroy', accounting_group, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Accounting group', new_accounting_group_path %>
