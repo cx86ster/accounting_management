@@ -11,35 +11,54 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :accounting_date %><br>
-    <%= f.date_select :accounting_date %>
-  </div>
-  <div class="field">
-    <%= f.label :accounting_money %><br>
-    <%= f.number_field :accounting_money %>
-  </div>
-  <div class="field">
-    <%= f.label :item_name %><br>
-    <%= f.text_field :item_name %>
-  </div>
-  <div class="field">
-    <%= f.label :accounting_group_id %><br>
-    <%= f.number_field :accounting_group_id %>
-  </div>
-  <div class="field">
-    <%= f.label :purchase_place %><br>
-    <%= f.text_field :purchase_place %>
-  </div>
-  <div class="field">
-    <%= f.label :accounting_source %><br>
-    <%= f.text_field :accounting_source %>
-  </div>
-  <div class="field">
-    <%= f.label :accounting_class %><br>
-    <%= f.text_field :accounting_class %>
-  </div>
+  <table>
+    <tr class="field" id='date-form'>
+      <th><%= f.label :accounting_date %></th>
+      <td>
+        <div class="input-group date datepicker" style="width:200px;">
+          <%= f.text_field :accounting_date, class: 'form-control', placeholder: 'YYYY/MM/DD' %>
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"></span>
+          </span>
+        </div>
+      </td>
+    </tr>
+    <tr class="field">
+      <th><%= f.label :accounting_money %></th>
+      <td><%= f.number_field :accounting_money %>円</td>
+    </tr>
+    <tr class="field">
+      <th><%= f.label :item_name %></th>
+      <td><%= f.text_field :item_name %></td>
+    </tr>
+    <tr class="field">
+      <th><%= f.label :accounting_group_id %></th>
+      <td><%= f.collection_select :accounting_group_id, AccountingGroup.where(:accounting_class => @accounting.accounting_class), :id, :accounting_group_name %></td>
+    </tr>
+    <tr class="field">
+      <th><%= f.label :purchase_place %></th>
+      <td><%= f.text_field :purchase_place %></td>
+    </tr>
+    <tr class="field">
+      <th><%= f.label :accounting_source %></th>
+      <td><%= f.select :accounting_source, options_for_select(Constants::ACCOUNTING_SOURCE) %></td>
+    </tr>
+  </table>
+  <%= f.hidden_field :accounting_class %>
   <div class="actions">
     <%= f.submit %>
   </div>
 <% end %>
+<%= link_to 'Back', accountings_path %>
+<script type="text/javascript">
+    var ready = function () {
+        $('.datepicker').datetimepicker({
+            locale: 'ja',
+            viewMode: 'days',
+            format: 'YYYY/MM/DD'
+        });
+    };
+    $(document).ready(ready)
+    $(document).on('page:load', ready)
+
+</script>

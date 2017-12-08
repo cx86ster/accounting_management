@@ -41,3 +41,15 @@ gem 'rails_12factor', group: :production
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
+gem 'bootstrap-sass'
+gem 'momentjs-rails', '>= 2.9.0'
+gem 'bootstrap3-datetimepicker-rails', '~> 4.17.37'
+
+gem 'ransack'
+
+gem 'active_hash'
+
+group :development, :test do
+  gem 'pry-rails'
+  gem 'pry-byebug'
+end

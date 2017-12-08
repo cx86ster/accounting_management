@@ -4,7 +4,11 @@ class AccountingsController < ApplicationController
   # GET /accountings
   # GET /accountings.json
   def index
-    @accountings = Accounting.all
+    @q = Accounting.ransack params[:q]
+    @accountings = @q.result
+    binding.pry
+      #@accountings = Accounting.all
+#    @sum_accounting_money = @accountings.inject(0) {|sum, hash| sum + hash[:accounting_money]}
   end
 
   # GET /accountings/1
@@ -15,6 +19,7 @@ class AccountingsController < ApplicationController
   # GET /accountings/new
   def new
     @accounting = Accounting.new
+    @accounting.accounting_class = params[:accounting_class]
   end
 
   # GET /accountings/1/edit
@@ -28,7 +33,7 @@ class AccountingsController < ApplicationController
 
     respond_to do |format|
       if @accounting.save
-        format.html { redirect_to @accounting, notice: 'Accounting was successfully created.' }
+        format.html { redirect_to accountings_url, notice: '収支情報を作成しました。' }
         format.json { render :show, status: :created, location: @accounting }
       else
         format.html { render :new }
@@ -42,7 +47,7 @@ class AccountingsController < ApplicationController
   def update
     respond_to do |format|
       if @accounting.update(accounting_params)
-        format.html { redirect_to @accounting, notice: 'Accounting was successfully updated.' }
+        format.html { redirect_to accountings_url, notice: '収支情報を変更しました。' }
         format.json { render :show, status: :ok, location: @accounting }
       else
         format.html { render :edit }
@@ -56,7 +61,7 @@ class AccountingsController < ApplicationController
   def destroy
     @accounting.destroy
     respond_to do |format|
-      format.html { redirect_to accountings_url, notice: 'Accounting was successfully destroyed.' }
+      format.html { redirect_to accountings_url, notice: '収支情報を削除しました。' }
       format.json { head :no_content }
     end
   end
@@ -64,7 +69,11 @@ class AccountingsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_accounting
-      @accounting = Accounting.find(params[:id])
+      unless Accounting.find_by(id: params[:id])
+        redirect_to accountings_path, notice: '収支情報が存在しません。削除された可能性があります。'
+      else
+        @accounting = Accounting.find(params[:id])
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
