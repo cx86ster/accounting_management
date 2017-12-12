@@ -1,28 +1,23 @@
 <p id="notice"><%= notice %></p>
 
 <h1>収支情報一覧</h1>
-<%= link_to '支出登録', new_accounting_path(accounting_class: 2), class: 'btn btn-default' %>　<%= link_to '収入登録', new_accounting_path(accounting_class: 1), class: 'btn btn-default' %>
-
+<%= link_to '支出登録', new_accounting_path(accounting_class_id: 2), class: 'btn btn-info' %>　<%= link_to '収入登録', new_accounting_path(accounting_class_id: 1), class: 'btn btn-warning' %>
 <%= search_form_for(@q, url: accountings_path, method: :get) do |f| %>
-  <table>
+  <table border="1" class="accounting-table">
     <tr class="field">
-      <th><%= f.label :accounting_class %></th>
-      <td>
-        <%#= f.select :accounting_class_eq, options_for_select(Constants::ACCOUNTING_CLASS), :include_blank => true %>
-        <%= f.collection_select :accounting_class_eq, Constants::ACCOUNTING_CLASS, :key, :include_blank => true %>
-        <%#= f.collection_select :accounting_class_eq, grouped_options_for_select(Constants::ACCOUNTING_CLASS), :include_blank => true %>
-      </td>
+      <th><%= f.label :accounting_class_id %></th>
+      <td><%= f.collection_select :accounting_class_id_eq, AccountingClass.all, :id, :accounting_class_name, :include_blank => true %></td>
     </tr>
     <tr class="field">
       <th><%= f.label :accounting_date %></th>
-      <td>
-        <div class="input-group date datepicker_prev" style="width:600px;">
+      <td class="search_accounting_date">
+        <div class="input-group date datepicker_prev datepicker_accounting" style="width:160px;">
           <%= f.text_field :accounting_date_gteq, class: 'form-control accounting-date-calendar', placeholder: 'YYYY/MM/DD' %>
           <span class="input-group-addon">
             <span class="glyphicon glyphicon-calendar"></span>
           </span>
-        </div>
-        <div class="input-group date datepicker_next" style="width:600px;">
+        </div>〜
+        <div class="input-group date datepicker_next datepicker_accounting" style="width:160px;">
           <%= f.text_field :accounting_date_lteq, class: 'form-control accounting-date-calendar', placeholder: 'YYYY/MM/DD' %>
           <span class="input-group-addon">
             <span class="glyphicon glyphicon-calendar"></span>
@@ -32,7 +27,7 @@
     </tr>
     <tr class="field">
       <th><%= f.label :accounting_money %></th>
-      <td><%= f.number_field :accounting_money_gteq %>〜<%= f.number_field :accounting_money_lteq %></td>
+      <td><%= f.number_field :accounting_money_gteq %>〜<%= f.number_field :accounting_money_lteq %>円</td>
     </tr>
     <tr class="field">
       <th><%= f.label :item_name %></th>
@@ -47,16 +42,17 @@
       <td><%= f.text_field :purchase_place_cont %></td>
     </tr>
     <tr class="field">
-      <th><%= f.label :accounting_source %></th>
-      <td><%= f.select :accounting_source_eq, options_for_select(Constants::ACCOUNTING_SOURCE), :include_blank => true %></td>
+      <th><%= f.label :accounting_source_id %></th>
+      <td><%= f.collection_select :accounting_source_id_eq, AccountingSource.all, :id, :accounting_source_name, :include_blank => true %></td>
     </tr>
   </table>
-  <%= f.submit '検索', class: "btn btn-primary" %>
+  <%= f.submit '検索', class: "btn btn-danger" %>　<!--input type="button" class="btn btn-default" value="クリア" onclick="ClearSearchConditions();"-->
 
 <% end %>
 
+<%= page_entries_info(@accountings) %><br><%= paginate @accountings %>
 
-<table border="1">
+<table border="1" class="accounting-table">
   <thead>
     <tr>
       <th>収支</th>
@@ -73,18 +69,18 @@
   <tbody>
     <% @accountings.each do |accounting| %>
       <tr>
-        <td><%= Constants::ACCOUNTING_CLASS[accounting.accounting_class] %></td>
+        <td><%= accounting.accounting_class.accounting_class_name %></td>
         <td><%= accounting.accounting_date %></td>
         <td style="text-align: right;"><%= number_to_currency(accounting.accounting_money) %></td>
         <td><%= accounting.item_name %></td>
         <td><%= accounting.accounting_group.accounting_group_name %></td>
         <td><%= accounting.purchase_place %></td>
-        <td><%= accounting.accounting_source %></td>
+        <td><%= accounting.accounting_source.accounting_source_name %></td>
         <td><%= link_to '編集', edit_accounting_path(accounting) %></td>
         <td><%= link_to '削除', accounting, method: :delete, data: { confirm: '収支情報を削除しますか？' } %></td>
       </tr>
     <% end %>
-    <tr><th colspan="6" style="text-align: right;">合計額</th><td colspan="3" style="text-align: right;"><%#= number_to_currency(@sum_accounting_money) %></td></tr>
+    <tr><th colspan="6" style="text-align: right;">合計額</th><td colspan="3" style="text-align: right;"><%= number_to_currency(@sum_accounting_money) %></td></tr>
   </tbody>
 </table>
 <script type="text/javascript">
@@ -102,5 +98,6 @@
     };
     $(document).ready(ready)
     $(document).on('page:load', ready)
+
 
 </script>

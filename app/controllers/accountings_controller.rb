@@ -4,11 +4,10 @@ class AccountingsController < ApplicationController
   # GET /accountings
   # GET /accountings.json
   def index
-    @q = Accounting.ransack params[:q]
-    @accountings = @q.result
-    binding.pry
-      #@accountings = Accounting.all
-#    @sum_accounting_money = @accountings.inject(0) {|sum, hash| sum + hash[:accounting_money]}
+    session[:params] = params[:q] if params.has_key?(:q)
+    @q = Accounting.ransack(session[:params])
+    @accountings = @q.result.page(params[:page]).per(30)
+    @sum_accounting_money = Accounting.ransack(session[:params]).result.sum(:accounting_money)
   end
 
   # GET /accountings/1
@@ -19,7 +18,7 @@ class AccountingsController < ApplicationController
   # GET /accountings/new
   def new
     @accounting = Accounting.new
-    @accounting.accounting_class = params[:accounting_class]
+    @accounting.accounting_class_id = params[:accounting_class_id]
   end
 
   # GET /accountings/1/edit
@@ -78,6 +77,6 @@ class AccountingsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def accounting_params
-      params.require(:accounting).permit(:accounting_date, :accounting_money, :item_name, :accounting_group_id, :purchase_place, :accounting_source, :accounting_class)
+      params.require(:accounting).permit(:accounting_date, :accounting_money, :item_name, :accounting_group_id, :purchase_place, :accounting_source_id, :accounting_class_id)
     end
 end

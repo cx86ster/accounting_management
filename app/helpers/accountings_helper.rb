@@ -14,4 +14,12 @@ module AccountingsHelper
       '支出情報変更'
     end
   end
+
+  def accounting_class_name(accounting_class)
+    if accounting_class == '1'
+      '収入'
+    elsif accounting_class == '2'
+      '支出'
+    end
+  end
 end

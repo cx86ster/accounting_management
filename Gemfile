@@ -47,6 +47,8 @@ gem 'bootstrap3-datetimepicker-rails', '~> 4.17.37'
 
 gem 'ransack'
 
+gem 'kaminari'
+
 gem 'active_hash'
 
 group :development, :test do

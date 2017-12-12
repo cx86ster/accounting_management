@@ -1,7 +1,7 @@
 <%= form_for(@accounting) do |f| %>
   <% if @accounting.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@accounting.errors.count, "error") %> prohibited this accounting from being saved:</h2>
+      <h2><%= "入力内容にエラーがあり、データを保存できません" %></h2>
 
       <ul>
       <% @accounting.errors.full_messages.each do |message| %>
@@ -11,7 +11,7 @@
     </div>
   <% end %>
 
-  <table>
+  <table border="1" class="accounting-table">
     <tr class="field" id='date-form'>
       <th><%= f.label :accounting_date %></th>
       <td>
@@ -40,16 +40,16 @@
       <td><%= f.text_field :purchase_place %></td>
     </tr>
     <tr class="field">
-      <th><%= f.label :accounting_source %></th>
-      <td><%= f.select :accounting_source, options_for_select(Constants::ACCOUNTING_SOURCE) %></td>
+      <th><%= f.label :accounting_source_id %></th>
+      <td><%= f.collection_select :accounting_source_id, AccountingSource.all, :id, :accounting_source_name %></td>
     </tr>
   </table>
-  <%= f.hidden_field :accounting_class %>
+  <%= f.hidden_field :accounting_class_id %>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit :class=>"btn btn-danger" %>
   </div>
 <% end %>
-<%= link_to 'Back', accountings_path %>
+<%= link_to '一覧に戻る', accountings_path, {:class=>"square_btn"} %>
 <script type="text/javascript">
     var ready = function () {
         $('.datepicker').datetimepicker({
